@@ -1,0 +1,39 @@
+import pandas
+import pandas as pd
+import openpyxl
+import psycopg2
+
+
+#아래는 엑셀리스트에서 사용자 정보를 가져와 업데이트 쿼리 반영
+
+
+username = pandas.read_excel("/Users/gondoli/Downloads/inuserlist.xlsx")
+
+totallist = username.values.tolist()
+length = len (totallist)
+
+print (totallist)
+print(length)
+
+user=[]
+email=[]
+QueryList = list([])
+
+for i in range (0, length):
+    user += list([totallist[i][0]])
+    email += list([totallist[i][1]])
+    print("user =", user)
+    print("email =", email)
+    print("i=",i)
+
+UpdateQuery = "Update cwd_user set email_address = " + "'" + email[i] + "'" + " where user_name = " + "'" + user[i] +"';";
+print("query = ", UpdateQuery)
+QueryList += list([UpdateQuery])
+print("QueryList =",QueryList)
+#QueryList = openpyxl.Workbook(QueryList)
+
+#QueryList.save('/Users/gondoli/Downloads/Query2.xlsx');
+QueryList = pd.DataFrame(QueryList)
+QueryList.to_excel('/Users/gondoli/Downloads/Query.xlsx', sheet_name='query')    
+
+#UpdateQuery.to_excel(excel_writer='/Users/gondoli/Downloads/Query.xlsx', sheet_name='query')
